@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Kalakar - AI-powered tool for Indian artisans" />
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <title>Kalakar - AI Artisan Marketplace</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'primary-brand': '#e75a27',
+              'primary-text': '#1b110e',
+              'secondary-text': '#97624e',
+              'background-main': '#fcf9f8',
+              'background-light': '#ffffff',
+              'border-color': '#f3eae7',
+              'error-color': '#ef4444',
+              'etsy-color': '#f45800',
+              'whatsapp-color': '#25d366',
+              'amazon-color': '#ff9900'
+            },
+            fontFamily: {
+              'main': ['Plus Jakarta Sans', 'sans-serif'],
+              'serif': ['DM Serif Display', 'serif']
+            },
+            spacing: {
+              'xs': '4px',
+              'sm': '8px',
+              'md': '16px',
+              'lg': '24px',
+              'xl': '32px'
+            }
+          }
+        }
+      }
+    </script>
+    <style type="text/tailwindcss">
+      @layer base {
+        :root {
+          --primary-brand: #e75a27;
+          --primary-text: #1b110e;
+          --secondary-text: #97624e;
+          --background-main: #fcf9f8;
+          --background-light: #ffffff;
+          --border-color: #f3eae7;
+        }
+        body {
+          font-family: "Plus Jakarta Sans", sans-serif;
+        }
+        h1,h2,h3,h4,h5,h6 {
+          font-family: "DM Serif Display", serif;
+        }
+      }
+      @layer components {
+        .btn-primary {
+          @apply bg-primary-brand text-background-light rounded-lg p-md font-bold text-center w-full flex items-center justify-center gap-sm;
+          box-shadow: 0px 4px 15px rgba(231, 90, 39, 0.2);
+        }
+        .btn-primary:disabled {
+          @apply opacity-50 cursor-not-allowed;
+        }
+        .safe-top {
+          padding-top: var(--safe-area-top);
+        }
+        .safe-header {
+          padding-top: calc(var(--safe-area-top) + 16px);
+        }
+      }
+    </style>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #f0f0f0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      .phone-container {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2vmin;
+        box-sizing: border-box;
+      }
+
+      .phone-frame {
+        width: min(375px, 90vw, 90vh * 9/19.5);
+        height: min(812px, 90vh, 90vw * 19.5/9);
+        aspect-ratio: 9/19.5;
+        background: #1a1a1a;
+        border-radius: min(32px, 3vmin);
+        padding: min(6px, 0.6vmin);
+        box-shadow:
+          0 min(16px, 1.6vmin) min(32px, 3.2vmin) rgba(0,0,0,0.4),
+          0 0 0 min(2px, 0.2vmin) rgba(255,255,255,0.1);
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+      }
+
+      .phone-screen {
+        width: 100%;
+        height: 100%;
+        border-radius: min(26px, 2.6vmin);
+        overflow: hidden;
+        background: white;
+        position: relative;
+        isolation: isolate;
+      }
+
+      .hole-punch {
+        position: absolute;
+        top: min(24px, 2.4vmin);
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(14px, 1.4vmin);
+        height: min(14px, 1.4vmin);
+        background: #000;
+        border-radius: 50%;
+        z-index: 1000;
+        box-shadow: 0 0 0 min(1px, 0.1vmin) rgba(255,255,255,0.1);
+        pointer-events: none;
+      }
+
+      /* Safe area for content to avoid hole punch */
+      :root {
+        --safe-area-top: max(min(48px, 4.8vmin), env(safe-area-inset-top, 0px));
+      }
+
+      .recording {
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+
+      /* CRITICAL: Ensure React app stays contained within phone */
+      #root {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        isolation: isolate;
+      }
+
+      /* FORCE CONTAINMENT: Override any positioning that escapes phone frame */
+      #root .fixed,
+      #root .sticky,
+      #root [class*="fixed"],
+      #root [class*="sticky"] {
+        position: relative !important;
+      }
+
+      /* FORCE RELATIVE POSITIONING FOR ALL CHILDREN */
+      #root * {
+        position: relative !important;
+      }
+
+      /* OVERRIDE VIEWPORT UNITS */
+      #root [style*="100vh"],
+      #root [style*="100vw"] {
+        height: 100% !important;
+        width: 100% !important;
+      }
+
+      /* EMERGENCY CONTAINMENT */
+      .phone-screen > #root > * {
+        max-width: 100% !important;
+        max-height: 100% !important;
+        contain: layout style paint !important;
+      }
+
+      /* DISABLE TRANSFORMS THAT COULD ESCAPE */
+      #root [style*="transform: translate"] {
+        transform: none !important;
+      }
+
+      /* FORCE Z-INDEX CONTAINMENT */
+      #root * {
+        z-index: auto !important;
+      }
+
+      /* Keep hole punch on top */
+      .hole-punch {
+        z-index: 1000 !important;
+        position: absolute !important;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div class="phone-container">
+      <div class="phone-frame">
+        <div class="hole-punch"></div>
+        <div class="phone-screen">
+          <div id="root"></div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/index.tsx"></script>
+  </body>
+</html>
